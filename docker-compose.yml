@@ -1,0 +1,152 @@
+services:
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - ./jellyfin/config:/config
+      - ./jellyfin/cache:/cache
+      - /mnt/ssd/jellyfin/media:/media
+    ports:
+      - 8096:8096
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - ./prowlarr:/config
+    ports:
+      - 9696:9696
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - ./radarr:/config
+      - /mnt/ssd/jellyfin/media:/media
+      - /mnt/ssd/jellyfin/media/downloads:/downloads
+    ports:
+      - 7878:7878
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - ./sonarr:/config
+      - /mnt/ssd/jellyfin/media:/media
+      - /mnt/ssd/jellyfin/media/downloads:/downloads
+    ports:
+      - 8989:8989
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+      - WEBUI_PORT=8080
+    volumes:
+      - ./qbittorrent:/config
+      - /mnt/ssd/jellyfin/media/downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - ./bazarr:/config
+      - /mnt/ssd/jellyfin/media:/media
+    ports:
+      - 6767:6767
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - TZ=Asia/Kuala_Lumpur
+    volumes:
+      - ./seerr:/app/config
+    ports:
+      - 5055:5055
+    networks:
+      - medianet
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Asia/Kuala_Lumpur
+    ports:
+      - 8191:8191
+    networks:
+      - medianet
+    restart: unless-stopped
+
+networks:
+  medianet:
+    driver: bridge
