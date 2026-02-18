@@ -98,7 +98,7 @@ services:
     restart: unless-stopped
 
   bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
+    image: linuxserver/bazarr:latest
     container_name: bazarr
     dns:
       - 8.8.8.8
