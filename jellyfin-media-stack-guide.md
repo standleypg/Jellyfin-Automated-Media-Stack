@@ -55,7 +55,6 @@ mkdir -p /mnt/ssd/jellyfin/media/downloads
 ```
 
 > Change `/mnt/ssd/jellyfin/media` to your actual media storage path.
-
 ---
 
 ## Step 2: Create Docker Compose File
@@ -365,6 +364,7 @@ docker logs qbittorrent | grep password      # Get qBittorrent temp password
 | Containers can't reach each other | All must be on medianet network |
 | Seerr 404 sign in error | Use container name `jellyfin` not IP, port in its own field |
 | Seerr permission denied / restart loop | `sudo chown -R 1000:1000 ~/media-stack/seerr` then restart |
+| Folder is not writable by user `abc` | `sudo chown -R 1000:1000 /mnt/ssd/jellyfin/media/* && sudo chmod -R u+rwX /mnt/ssd/jellyfin/media/*` then restart |
 | Radarr shows movies as missing (red) | Normal — check indexers synced and qBittorrent connected |
 | Radarr can't import downloaded file | Ensure `/downloads` is mounted in Radarr volumes |
 | Prowlarr sync button stuck | `docker restart prowlarr` |
