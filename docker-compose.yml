@@ -48,7 +48,6 @@ services:
     volumes:
       - ./radarr:/config
       - /mnt/ssd/jellyfin/media:/media
-      - /mnt/ssd/jellyfin/media/downloads:/downloads
     ports:
       - 7878:7878
     networks:
@@ -68,7 +67,6 @@ services:
     volumes:
       - ./sonarr:/config
       - /mnt/ssd/jellyfin/media:/media
-      - /mnt/ssd/jellyfin/media/downloads:/downloads
     ports:
       - 8989:8989
     networks:
