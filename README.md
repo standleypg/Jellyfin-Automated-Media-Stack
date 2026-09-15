@@ -63,6 +63,7 @@ You -> Seerr -> Radarr/Sonarr -> Prowlarr -> qBittorrent -> Bazarr -> Jellyfin
 ```
 ~/media-stack/
 ├── docker-compose.yml
+├── update-media-stack.sh    <- pulls latest images & restarts the stack
 ├── README.md
 ├── jellyfin-media-stack-guide.md
 ├── jellyfin/
@@ -105,10 +106,29 @@ Use your actual server IP only when accessing from your browser.
 
 ---
 
+## Updating the Stack
+
+`update-media-stack.sh` pulls the latest image for every service and recreates containers that changed, in the correct order (pull first, then up):
+
+```bash
+./update-media-stack.sh
+```
+
+Run it from `~/media-stack` (the folder containing `docker-compose.yml`). Make sure it's executable first:
+
+```bash
+chmod +x update-media-stack.sh
+```
+
+---
+
 ## Common Commands
 ```bash
 # Start all services
 docker compose up -d
+
+# Update all services (pull latest images + recreate)
+./update-media-stack.sh
 
 # Stop all services
 docker compose down
